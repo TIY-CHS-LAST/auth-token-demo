@@ -9,10 +9,9 @@ router.route('/').post((req, res) => {
     user,
     next
   ) {
-    console.log('user******', user)
     if (err) return next(err)
     if (!user) {
-      console.log('in here')
+
       return res.status(401).send({ message: 'Wrong email and/or password' })
     }
     user.comparePassword(req.body.password, function (err, isMatch) {

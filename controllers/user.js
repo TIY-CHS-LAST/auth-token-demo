@@ -20,7 +20,7 @@ router
         roles: req.body.roles
       })
       user.save(() => {
-        res.send({ token: createToken(user) message: 'User has been created' })
+        res.send({ token: createToken(user), message: 'User has been created' })
       })
     })
   })
