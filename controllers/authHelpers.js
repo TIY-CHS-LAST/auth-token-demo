@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const { TOKEN_SECRET } = require('../config')
 const moment = require('moment')
 
-module.exports = { createToken, ensureAuthenticated }
+module.exports = { createToken, ensureAuthenticated, checkRole }
 
 function createToken (user) {
   const payload = {
@@ -12,6 +12,10 @@ function createToken (user) {
     exp: moment().add(1, 'day').unix()
   }
   return jwt.sign(payload, TOKEN_SECRET)
+}
+
+function checkRole (role, user) {
+  return user.roles.indexOf(role) > -1
 }
 
 function ensureAuthenticated (req, res, next) {
