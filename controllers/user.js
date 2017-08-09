@@ -1,7 +1,8 @@
 const User = require('../models/User')
 const router = require('express').Router()
-
-router.route('/')
+const { createToken } = require('./authHelpers')
+router
+  .route('/')
   .get((req, res) => {
     User.find({}, (err, users) => {
       res.send(users)
@@ -9,8 +10,8 @@ router.route('/')
   })
   .post((req, res) => {
     User.findOne({ email: req.body.email }, (err, existingUser) => {
-      if(existingUser) {
-        return res.status(409).send({message: 'Email is already taken.'})
+      if (existingUser) {
+        return res.status(409).send({ message: 'Email is already taken.' })
       }
       const user = new User({
         name: req.body.name,
@@ -19,7 +20,7 @@ router.route('/')
         roles: req.body.roles
       })
       user.save(() => {
-        res.send({ message: 'User has been created', user })
+        res.send({ token: createToken(user) message: 'User has been created' })
       })
     })
   })
