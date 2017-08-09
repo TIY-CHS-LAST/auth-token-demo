@@ -11,7 +11,6 @@ router.route('/').post((req, res) => {
   ) {
     if (err) return next(err)
     if (!user) {
-
       return res.status(401).send({ message: 'Wrong email and/or password' })
     }
     user.comparePassword(req.body.password, function (err, isMatch) {
