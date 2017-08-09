@@ -1,4 +1,3 @@
-
 const express = require('express')
 const { MONGO_URI, TOKEN_SECRET } = require('./config')
 const bodyParser = require('body-parser')
@@ -7,7 +6,7 @@ const userRoutes = require('./controllers/user')
 const authRoutes = require('./controllers/auth')
 const protectedRoutes = require('./controllers/protected')
 
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, { useMongoClient: true })
 mongoose.connection.on('error', function () {
   console.error(
     'MongoDB Connection Error. Please make sure that MongoDB is running.'
