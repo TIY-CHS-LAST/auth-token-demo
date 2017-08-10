@@ -13,12 +13,15 @@ router.route('/').post((req, res) => {
     if (!user) {
       return res.status(401).send({ message: 'Wrong email and/or password' })
     }
-    user.comparePassword(req.body.password, function (err, isMatch) {
+    user.comparePassword(req.body.password, user.password, function (
+      err,
+      isMatch
+    ) {
       console.log('is match', isMatch)
       if (!isMatch) {
         return res.status(401).send({ message: 'Wrong email and/or password' })
       }
-      res.send({ token: createToken(user) })
+      res.send({ token: createToken(user), roles: user.roles })
     })
   })
 })
