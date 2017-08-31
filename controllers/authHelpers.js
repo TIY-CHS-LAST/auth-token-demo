@@ -4,10 +4,12 @@ const moment = require('moment')
 
 module.exports = { createToken, ensureAuthenticated, checkRole }
 
-function createToken (user) {
+function createToken ({ _id, name, email, roles }) {
   const payload = {
-    sub: user._id,
-    user,
+    sub: _id,
+    name,
+    email,
+    roles,
     iat: moment().unix(),
     exp: moment().add(1, 'day').unix()
   }
@@ -27,10 +29,11 @@ function ensureAuthenticated (req, res, next) {
       })
   }
   const token = req.headers.authorization.split(' ')[1]
-  var payload = jwt.verify(token, TOKEN_SECRET)
-  if (payload.exp <= moment().unix()) {
+  const { exp, name, email, roles, _id } = jwt.verify(token, TOKEN_SECRET)
+  console.log('PAYLOAD', exp, name, email, roles, _id)
+  if (exp <= moment().unix()) {
     return res.status(401).send({ message: 'Token has expired' })
   }
-  req.user = payload.user
+  req.user = { name, email, roles, _id }
   next()
 }

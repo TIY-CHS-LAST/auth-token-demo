@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const { MONGO_URI, TOKEN_SECRET } = require('./config')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -16,6 +17,7 @@ mongoose.connection.on('error', function () {
 const app = express()
 
 app.set('port', process.env.PORT || 3000)
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
